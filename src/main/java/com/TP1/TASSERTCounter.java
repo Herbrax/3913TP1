@@ -47,7 +47,6 @@ public class TASSERTCounter {
         if(!junit) {
         	System.err.println("Yo y'a pas de junit.Assert dans ton code boy");
         }
-        
         return assertionCount;
     }
 }
