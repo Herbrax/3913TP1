@@ -13,26 +13,29 @@ public class TLS {
         String folderPath = args[0];
         String outputCsvFile = args[1];
 
-        List<testFileData> testClassList = new ArrayList<>();
+        List<testFileData> fileDataList = new ArrayList<>();
+        List<String> outputLines = new ArrayList<>();
 
         // Recursively traverse the folder structure and collect information about test classes
-        processFolder(folderPath, testClassList);
+        processFolder(folderPath, fileDataList);
 
+        analysis(fileDataList, outputLines);
+        
         // Write the collected information to a CSV file
-        writeCsvFile(outputCsvFile, testClassList);
+        writeCsvFile(outputCsvFile, outputLines);
     }
 
-    private static void processFolder(String folderPath, List<testFileData> testClassList) {
+    private static void processFolder(String folderPath, List<testFileData> fileDataList) {
         try {
         	// Je passe récursivement sur tout dans le dossier
             File[] files = new File(folderPath).listFiles();
             for (File file : files) {
                 if (file.isDirectory()) {
                     // et j'applique la récursivité sur mes sous dossiers
-                    processFolder(file.getAbsolutePath(), testClassList);
+                    processFolder(file.getAbsolutePath(), fileDataList);
                 } else if (file.isFile() && file.getName().endsWith("Test.java")) {
                     // et si c'est un fichier java de test, je le traite
-                    processJavaTestFile(file, testClassList);
+                    processJavaTestFile(file, fileDataList);
                 }
             }
         } catch (NullPointerException e) {
@@ -40,7 +43,7 @@ public class TLS {
         }
     }
 
-    private static void processJavaTestFile(File javaTestFile, List<testFileData> testClassList) {
+    private static void processJavaTestFile(File javaTestFile, List<testFileData> fileDataList) {
         try {
 
             if (!javaTestFile.getName().endsWith(".java")) {
@@ -79,38 +82,40 @@ public class TLS {
             testClass.tloc = tloc;
             testClass.tassert = tassert;
             testClass.tcm = tcm;
-            testClassList.add(testClass);
+            fileDataList.add(testClass);
 
         } catch (IOException e) {
             System.err.println("File unreadable: " + e.getMessage());
         }
     }
 
-    private static void writeCsvFile(String outputCsvFile, List<testFileData> testClassList) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputCsvFile))) {
-            writer.write("File Path,Package Name,Class Name,TLOC,TASSERT,TCM\n");
-            for (testFileData testClass : testClassList) {
-                writer.write(String.format("%s,%s,%s,%d,%d,%.2f\n",
-                    testClass.filePath,
-                    testClass.packageName,
-                    testClass.className,
-                    testClass.tloc,
-                    testClass.tassert,
-                    testClass.tcm));
-            }
+    private static void analysis(List<testFileData> fileDataList, List<String> outputLines) {
+        for (testFileData fileData: fileDataList) {
+            // Je génère mon output
+            String outputLine = String.format("%s;%s;%s;%d;%d;%.2f;%s",
+            		fileData.filePath,
+            		fileData.packageName,
+            		fileData.className,
+            		fileData.tloc,
+            		fileData.tassert,
+            		fileData.tcm);
 
-            System.out.println("CSV file créé a la sortie : " + outputCsvFile);
-        } catch (IOException e) {
-            System.err.println("Fichier non créé : " + e.getMessage());
+            // J'output la line et je la garde en mémoire pour mon CSV
+            outputLines.add(outputLine);
+            System.out.println(outputLine);
         }
     }
     
-    static class TestClass {
-        String filePath;
-        String packageName;
-        String className;
-        int tloc;
-        int tassert;
-        double tcm;
+    private static void writeCsvFile(String outputCsvFile, List<String> outputLines) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputCsvFile))) {
+            writer.write("filePath,Package Name,Class Name,TLOC,TASSERT,TCM");
+            for (String outputLine : outputLines) {
+                writer.write(outputLine + "\n");
+            }
+
+            System.out.println("CSV file créé à la sortie : " + outputCsvFile);
+        } catch (IOException e) {
+            System.err.println("Fichier non créé : " + e.getMessage());
+        }
     }
 }
