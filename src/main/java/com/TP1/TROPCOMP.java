@@ -19,7 +19,7 @@ public class TROPCOMP {
             outputCsvFile = args[3];
         }
         
-        List<TestClass> testClassList = new ArrayList<>();
+        List<testFileData> testClassList = new ArrayList<>();
         processFolder(folderPath, testClassList);
         
         // à réécrire
@@ -28,7 +28,7 @@ public class TROPCOMP {
         }
     }
 
-    private static void processFolder(String folderPath, List<TestClass> testClassList) {
+    private static void processFolder(String folderPath, List<testFileData> testClassList) {
         try {
         	// Je passe récursivement sur tout dans le dossier
             File[] files = new File(folderPath).listFiles();
@@ -46,15 +46,15 @@ public class TROPCOMP {
         }
     }
 
-    private static void processJavaFile(File javaTestFile, List<TestClass> testClassList) {
+    private static void processJavaFile(File javaFile, List<testFileData> testClassList) {
         try {
 
-            if (!javaTestFile.getName().endsWith(".java")) {
-                System.out.println("Not a Java file: " + javaTestFile.getName());
+            if (!javaFile.getName().endsWith(".java")) {
+                System.out.println("Not a Java file: " + javaFile.getName());
                 return;
             }
             
-            String fileName = javaTestFile.getName();
+            String fileName = javaFile.getName();
             String className = fileName.substring(0, fileName.length() - ".java".length());
             String packageName = null;
             int tloc = 0;
@@ -71,15 +71,15 @@ public class TROPCOMP {
                 }
 
                 // on réutilise TLOCCounter et TASSERTCOunter pour avoir nos valeurs
-                tloc = TLOCCounter.calculateTLOC(javaTestFile.getAbsolutePath());
-                tassert = TASSERTCounter.countAssertions(javaTestFile.getAbsolutePath());
+                tloc = TLOCCounter.calculateTLOC(javaFile.getAbsolutePath());
+                tassert = TASSERTCounter.countAssertions(javaFile.getAbsolutePath());
                 tcm = (tassert == 0) ? 0.0 : (double) tloc / tassert;
 
             }
 
             // On crée l'objet représentant notre classe de test 
-            TestClass testClass = new TestClass();
-            testClass.filePath = javaTestFile.getAbsolutePath();
+            testFileData testClass = new testFileData();
+            testClass.filePath = javaFile.getAbsolutePath();
             testClass.packageName = packageName;
             testClass.className = className;
             testClass.tloc = tloc;
@@ -92,27 +92,9 @@ public class TROPCOMP {
         }
     }
     
-    private static void writeCsvFile(String outputCsvFile, List<TestClass> testClassList) {
+    private static void writeCsvFile(String outputCsvFile, List<testFileData> testClassList) {
         // Votre logique pour écrire les informations dans un fichier CSV
         // Formattez les données et écrivez-les dans le format souhaité.
     }
 
-    // Define a class to store information about test classes
-    static class TestInfo {
-        String filePath;
-        String packageName;
-        String className;
-        int tloc;
-        int tassert;
-        double tcm;
-
-        TestInfo(String filePath, String packageName, String className, int tloc, int tassert, double tcm) {
-            this.filePath = filePath;
-            this.packageName = packageName;
-            this.className = className;
-            this.tloc = tloc;
-            this.tassert = tassert;
-            this.tcm = tcm;
-        }
-    }
 }

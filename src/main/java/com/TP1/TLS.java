@@ -6,14 +6,14 @@ public class TLS {
 
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out.println("Usage: java TLS <folder_path> <output_csv_file>");
+            System.out.println("Arguments manquants : java TLS <folder_path> <output_csv_file>");
             return;
         }
 
         String folderPath = args[0];
         String outputCsvFile = args[1];
 
-        List<TestClass> testClassList = new ArrayList<>();
+        List<testFileData> testClassList = new ArrayList<>();
 
         // Recursively traverse the folder structure and collect information about test classes
         processFolder(folderPath, testClassList);
@@ -22,7 +22,7 @@ public class TLS {
         writeCsvFile(outputCsvFile, testClassList);
     }
 
-    private static void processFolder(String folderPath, List<TestClass> testClassList) {
+    private static void processFolder(String folderPath, List<testFileData> testClassList) {
         try {
         	// Je passe récursivement sur tout dans le dossier
             File[] files = new File(folderPath).listFiles();
@@ -40,7 +40,7 @@ public class TLS {
         }
     }
 
-    private static void processJavaTestFile(File javaTestFile, List<TestClass> testClassList) {
+    private static void processJavaTestFile(File javaTestFile, List<testFileData> testClassList) {
         try {
 
             if (!javaTestFile.getName().endsWith(".java")) {
@@ -72,7 +72,7 @@ public class TLS {
             }
 
             // On crée l'objet représentant notre classe de test 
-            TestClass testClass = new TestClass();
+            testFileData testClass = new testFileData();
             testClass.filePath = javaTestFile.getAbsolutePath();
             testClass.packageName = packageName;
             testClass.className = className;
@@ -86,11 +86,10 @@ public class TLS {
         }
     }
 
-            
-    private static void writeCsvFile(String outputCsvFile, List<TestClass> testClassList) {
+    private static void writeCsvFile(String outputCsvFile, List<testFileData> testClassList) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputCsvFile))) {
             writer.write("File Path,Package Name,Class Name,TLOC,TASSERT,TCM\n");
-            for (TestClass testClass : testClassList) {
+            for (testFileData testClass : testClassList) {
                 writer.write(String.format("%s,%s,%s,%d,%d,%.2f\n",
                     testClass.filePath,
                     testClass.packageName,

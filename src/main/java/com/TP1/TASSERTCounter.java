@@ -8,7 +8,7 @@ public class TASSERTCounter {
     public static void main(String[] args) {
     	String filePath = "";
 	    if (args.length != 1) {
-            System.out.println("Usage: java TASSERTCounter <filePath>");
+            System.out.println("Arguments manquants : java TASSERTCounter <filePath>");
 	        return;
 	    } else {
 	        filePath = args[0]; // Assign the provided argument to filePath
