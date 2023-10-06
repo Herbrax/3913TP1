@@ -2,24 +2,30 @@ package com.TP1;
 import java.io.*;
 import java.util.*;
 
-public class TLS {
+import com.TP1.TLS.TestClass;
+
+public class TROPCOMP {
 
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage: java TLS <folder_path> <output_csv_file>");
+        if (args.length != 3) {
+            System.out.println("Arguments manquants : java TROPCOMP <folder_path> <threshold> [-o <output_csv_file>]");
             return;
         }
 
         String folderPath = args[0];
-        String outputCsvFile = args[1];
-
+        int threshold = Integer.parseInt(args[1]);
+        String outputCsvFile = null;
+        if (args.length == 4 && "-o".equals(args[2])) {
+            outputCsvFile = args[3];
+        }
+        
         List<TestClass> testClassList = new ArrayList<>();
-
-        // Recursively traverse the folder structure and collect information about test classes
         processFolder(folderPath, testClassList);
-
-        // Write the collected information to a CSV file
-        writeCsvFile(outputCsvFile, testClassList);
+        
+        // à réécrire
+        if (outputCsvFile != null) {
+            writeCsvFile(outputCsvFile, testClassList);
+        }
     }
 
     private static void processFolder(String folderPath, List<TestClass> testClassList) {
@@ -30,9 +36,9 @@ public class TLS {
                 if (file.isDirectory()) {
                     // et j'applique la récursivité sur mes sous dossiers
                     processFolder(file.getAbsolutePath(), testClassList);
-                } else if (file.isFile() && file.getName().endsWith("Test.java")) {
-                    // et si c'est un fichier java de test, je le traite
-                    processJavaTestFile(file, testClassList);
+                } else if (file.isFile() && file.getName().endsWith(".java")) {
+                    // et si c'est un fichier java, je le traite
+                    processJavaFile(file, testClassList);
                 }
             }
         } catch (NullPointerException e) {
@@ -40,7 +46,7 @@ public class TLS {
         }
     }
 
-    private static void processJavaTestFile(File javaTestFile, List<TestClass> testClassList) {
+    private static void processJavaFile(File javaTestFile, List<TestClass> testClassList) {
         try {
 
             if (!javaTestFile.getName().endsWith(".java")) {
@@ -85,33 +91,28 @@ public class TLS {
             System.err.println("File unreadable: " + e.getMessage());
         }
     }
-
-            
-    private static void writeCsvFile(String outputCsvFile, List<TestClass> testClassList) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputCsvFile))) {
-            writer.write("File Path,Package Name,Class Name,TLOC,TASSERT,TCM\n");
-            for (TestClass testClass : testClassList) {
-                writer.write(String.format("%s,%s,%s,%d,%d,%.2f\n",
-                    testClass.filePath,
-                    testClass.packageName,
-                    testClass.className,
-                    testClass.tloc,
-                    testClass.tassert,
-                    testClass.tcm));
-            }
-
-            System.out.println("CSV file créé a la sortie : " + outputCsvFile);
-        } catch (IOException e) {
-            System.err.println("Fichier non créé : " + e.getMessage());
-        }
-    }
     
-    static class TestClass {
+    private static void writeCsvFile(String outputCsvFile, List<TestClass> testClassList) {
+        // Votre logique pour écrire les informations dans un fichier CSV
+        // Formattez les données et écrivez-les dans le format souhaité.
+    }
+
+    // Define a class to store information about test classes
+    static class TestInfo {
         String filePath;
         String packageName;
         String className;
         int tloc;
         int tassert;
         double tcm;
+
+        TestInfo(String filePath, String packageName, String className, int tloc, int tassert, double tcm) {
+            this.filePath = filePath;
+            this.packageName = packageName;
+            this.className = className;
+            this.tloc = tloc;
+            this.tassert = tassert;
+            this.tcm = tcm;
+        }
     }
 }
