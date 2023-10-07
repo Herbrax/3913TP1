@@ -4,14 +4,13 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class TASSERTCounter {
-
     public static void main(String[] args) {
     	String filePath = "";
 	    if (args.length != 1) {
             System.out.println("Arguments manquants : java TASSERTCounter <filePath>");
 	        return;
 	    } else {
-	        filePath = args[0]; // Assign the provided argument to filePath
+	        filePath = args[0];
 	        System.out.println("Calculating TASSERT for: " + filePath);
 		    System.out.println("TASSERT :" + countAssertions(filePath));
 	    }

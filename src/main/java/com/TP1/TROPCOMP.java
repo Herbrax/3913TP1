@@ -9,7 +9,7 @@ public class TROPCOMP {
     	if (args.length > 0 && "-o".equals(args[0])) {
             if (args.length < 4) {
                 System.out.println("Arguments manquants : TROPCOMP -o <chemin-à-la-sortie.csv> <chemin-de-l'entrée> <seuil>");
-                return;
+                //return;
             }
             outputCsvFile = args[1];
             startIndex = 2; // Le reste des arguments commence à l'index 2
@@ -22,6 +22,7 @@ public class TROPCOMP {
         }
         String folderPath = args[startIndex];
         int threshold = Integer.parseInt(args[startIndex + 1]);
+        outputCsvFile = "outputt.csv";
         List<testFileData> fileDataList = new ArrayList<>();
         List<String> outputLines = new ArrayList<>();
         Processing.processFolder(folderPath, fileDataList);

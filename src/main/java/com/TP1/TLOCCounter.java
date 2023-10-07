@@ -11,7 +11,7 @@ public class TLOCCounter {
             System.out.println("Arguments manquants : java TLOCCounter <filePath>");
 	        return;
 	    } else {
-	        filePath = args[0]; // Assign the provided argument to filePath
+	        filePath = args[0];
 	        System.out.println("Calculating TLOC for: " + filePath);
 		    System.out.println("TLOC :" + calculateTLOC(filePath));
 	    }

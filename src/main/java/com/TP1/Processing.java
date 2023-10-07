@@ -28,7 +28,7 @@ public class Processing {
 	    }
 
 	 private static void processJavaTestFile(File javaTestFile, List<testFileData> fileDataList) {
-	        try {
+		 try {
 	        	// 1. Je vérifie que je fait bien affaire avec un ficier java
 	            if (!javaTestFile.getName().endsWith(".java")) {
 	                System.out.println("Not a Java file: " + javaTestFile.getName());
@@ -42,7 +42,7 @@ public class Processing {
 	            int tassert = 0;
 	            double tcm = 0;
 	            // 2.1 Janky but works, on cherche le packagename dans le fichier
-	            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+	            try (BufferedReader reader = new BufferedReader(new FileReader(javaTestFile))) {
 	                String line;
 	                while ((line = reader.readLine()) != null) {
 	                    if (line.startsWith("package ")) {
@@ -89,7 +89,7 @@ public class Processing {
 	 static void analysis(List<testFileData> fileDataList, List<String> outputLines) {
 	        for (testFileData fileData: fileDataList) {
 	            // Je génère mon output
-	            String outputLine = String.format("%s;%s;%s;%d;%d;%.2f;%s",
+	            String outputLine = String.format("%s;%s;%s;%d;%d;%.2f",
 	            		fileData.filePath,
 	            		fileData.packageName,
 	            		fileData.className,
@@ -106,7 +106,7 @@ public class Processing {
 	 static void analysis(List<testFileData> fileDataList, int threshold, List<String> outputLines) {
 	        for (testFileData fileData: fileDataList) {
 	            // Vérifiez si le TLOC ou le TCM est supérieur au seuil
-	            boolean aboveThreshold = fileData.tloc > threshold || fileData.tcm > threshold;
+	            boolean aboveThreshold = fileData.tloc > threshold && fileData.tcm > threshold;
 	            if (aboveThreshold) {
 	            // Génération de la sortie
 	            String outputLine = String.format("%s;%s;%s;%d;%d;%.2f;%s",
