@@ -1,0 +1,4 @@
+Si le seuil est trop bas, notre output nous noiera sous des fichiers qui ne sont pas vraiment complexes, et vice versa avec un seuil élevé, la mesure de la balance a trouver est donc une variable importante pour l'utilisateur. 
+Aussi, l'approche est assez simpliste et se base sur la croyance que l'on est censé avoir un certain nombre d'asserts par lignes de codes; 
+c'est bien pour analyser la densité d'assertions et les fichiers qui pourraient faire sujet de plus d'analyses mais elle ne tient pas forcément en compte la complexité du code ou de a quel point les tests couvrent le code. 
+Ce que j'aurais suggéré aurait été de trouver un facteur discriminant se rapportant directement à la qualité du code et d'en extrapoler une métrique plus fiable se rapprochant de ce qu'on à vu dans le cadre du cours.
