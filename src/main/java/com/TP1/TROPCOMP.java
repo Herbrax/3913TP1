@@ -22,14 +22,13 @@ public class TROPCOMP {
         }
         String folderPath = args[startIndex];
         int threshold = Integer.parseInt(args[startIndex + 1]);
-        outputCsvFile = "outputt.csv";
         List<testFileData> fileDataList = new ArrayList<>();
         List<String> outputLines = new ArrayList<>();
         Processing.processFolder(folderPath, fileDataList);
         Processing.analysis(fileDataList, threshold, outputLines);
         // J'output tout en CSV si un output à été fourni
         if (outputCsvFile != null) {
-        	String firstline = "filePath,Package Name,Class Name,TLOC,TASSERT,TCM,Seuil dépassé?\n";
+        	String firstline = "filePath;Package Name;Class Name;TLOC;TASSERT;TCM;Seuil dépassé?\n";
             Processing.writeCsvFile(outputCsvFile, outputLines,firstline);
         }
     }

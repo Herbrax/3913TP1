@@ -16,7 +16,7 @@ public class TLS {
         Processing.processFolder(folderPath, fileDataList);
         Processing.analysis(fileDataList, outputLines);
         // J'output tout en CSV (dans tous les cas, pas comme avec TROPCOMP)
-        String firstline = "filePath,Package Name,Class Name,TLOC,TASSERT,TCM\n";
+    	String firstline = "filePath;Package Name;Class Name;TLOC;TASSERT;TCM\n";
         Processing.writeCsvFile(outputCsvFile, outputLines,firstline);
     } 
 }

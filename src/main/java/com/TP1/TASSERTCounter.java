@@ -18,13 +18,9 @@ public class TASSERTCounter {
 
     public static int countAssertions(String filePath) {
         int assertionCount = 0;
-        boolean junit = false;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-            	if (!junit && (line.contains("import org.junit.Assert;") || line.contains("import org.junit.jupiter.api.Assertions;"))) {
-    				junit = true; // JUnit Assert exists
-    			}
             	// Source : https://junit.org/junit4/javadoc/latest/org/junit/Assert.html
             	if (line.contains("assertArrayEquals") ||
             			line.contains("assertEquals") ||
@@ -42,9 +38,6 @@ public class TASSERTCounter {
             }
         } catch (IOException e) {
             System.err.println("File unreadable: " + e.getMessage());
-        }
-        if(!junit) {
-        	System.err.println("Yo y'a pas de junit.Assert dans ton code boy");
         }
         return assertionCount;
     }
