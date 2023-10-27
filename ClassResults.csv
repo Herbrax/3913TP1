@@ -1,4 +1,4 @@
-class, ncloc, cloc, dc, testMethodsLoc, numberOfMethods, numberOfTestMethods, numberOfFunctionalMethods, rfc, wmc
+class, ncloc, cloc, dc, testMethodsLoc, numberOfMethods, numberOfTestMethods, numberOfFunctionalMethods, rfc, wmc, lastCommit, commitCount
 org.jfree.data.xy.XYSeriesTest, 470, 202, 0.3005952380952381, 467, 36, 36, 0, 38, 37, January/3/2022/6:57, 102
 org.jfree.chart.labels.StandardPieSectionLabelGenerator, 57, 173, 0.7521739130434782, 0, 12, 0, 12, 15, 15, January/1/2022/2:44, 102
 org.jfree.chart.renderer.xy.VectorRenderer, 176, 138, 0.4394904458598726, 0, 6, 0, 6, 31, 30, January/1/2022/2:44, 102
